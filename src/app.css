@@ -1,0 +1,143 @@
+@import 'tailwindcss';
+
+/* Custom styles for the attendance app */
+html {
+	font-family:
+		'Inter',
+		-apple-system,
+		BlinkMacSystemFont,
+		'Segoe UI',
+		Roboto,
+		sans-serif;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Animation for loading states */
+@keyframes pulse-slow {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.7;
+	}
+}
+
+.pulse-slow {
+	animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	width: 6px;
+}
+
+::-webkit-scrollbar-track {
+	background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #cbd5e1;
+	border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #94a3b8;
+}
+
+/* Focus styles */
+input:focus,
+select:focus,
+button:focus {
+	outline: none;
+}
+
+/* Camera specific styles */
+.camera-container video {
+	transform: scaleX(-1); /* Mirror selfie camera like phone apps */
+}
+
+.camera-container img {
+	transform: scaleX(-1); /* Mirror captured image */
+}
+
+/* Button hover effects */
+button:not(:disabled):hover {
+	transform: translateY(-1px);
+	box-shadow:
+		0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+button:not(:disabled):active {
+	transform: translateY(0);
+}
+
+/* Form validation styles */
+.invalid-field {
+	animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	10%,
+	30%,
+	50%,
+	70%,
+	90% {
+		transform: translateX(-2px);
+	}
+	20%,
+	40%,
+	60%,
+	80% {
+		transform: translateX(2px);
+	}
+}
+
+/* Success animation */
+.success-check {
+	animation: checkmark 0.6s ease-in-out;
+}
+
+@keyframes checkmark {
+	0% {
+		transform: scale(0);
+		opacity: 0;
+	}
+	50% {
+		transform: scale(1.2);
+		opacity: 0.8;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+	.container {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	/* Make buttons more touch-friendly on mobile */
+	button {
+		min-height: 48px;
+	}
+
+	/* Larger form inputs on mobile */
+	input,
+	select {
+		min-height: 48px;
+		font-size: 16px; /* Prevents zoom on iOS */
+	}
+}
