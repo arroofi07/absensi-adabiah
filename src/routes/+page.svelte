@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Camera from '$lib/components/Camera.svelte';
 	import StudentForm from '$lib/components/StudentForm.svelte';
+	import img from "$lib/assets/favicon.png";
 
 	// Student data state
 	let studentData = {
@@ -109,8 +110,8 @@
 		<!-- Header -->
 		<header class="mb-8 text-center">
 			<div class="school-logo mb-4">
-				<div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-blue-600">
-					<span class="text-xl font-bold text-white">SMA</span>
+				<div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full ">
+					<img src={img} alt="">
 				</div>
 			</div>
 			<h1 class="mb-2 text-3xl font-bold text-gray-800">SMA Adabiah 1 Padang</h1>
@@ -184,8 +185,12 @@
 
 		<!-- Footer -->
 		<footer class="mt-8 text-center text-sm text-gray-600">
-			<p>&copy; 2024 SMA Adabiah 1 Padang. Semua hak dilindungi.</p>
+			<p>&copy; 2025 SMA Adabiah 1 Padang</p>
 			<p class="mt-1">Sistem absensi digital untuk kemudahan dan akurasi data kehadiran siswa.</p>
+			<p class="mt-1 font-semibold text-blue-600">IT SUPPORT</p>
+			<p class="mt-1 font-semibold text-blue-600">
+				<a href="https://arovi.vercel.app">Arpansi-Enterprise X Yotoko Id</a>
+			</p>
 		</footer>
 	</div>
 </div>
