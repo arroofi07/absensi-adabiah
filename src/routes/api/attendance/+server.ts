@@ -2,6 +2,8 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import TelegramBot from 'node-telegram-bot-api';
 import { env } from '$env/dynamic/private';
+import { saveAttendanceRecord } from '$lib/storage/attendance';
+import { randomUUID } from 'crypto';
 
 // Environment variables for Telegram Bot
 const TELEGRAM_BOT_TOKEN = env.TELEGRAM_BOT_TOKEN || '';
@@ -107,6 +109,17 @@ ${attendanceTypeText}
 #Absensi #SMAAdabiah1Padang #${attendanceType.toUpperCase()}
     `.trim();
 
+		// Save attendance record to JSON file
+		const attendanceRecord = {
+			id: randomUUID(),
+			name,
+			class: studentClass,
+			attendanceType: attendanceType as 'masuk' | 'pulang',
+			timestamp
+		};
+
+		await saveAttendanceRecord(attendanceRecord);
+
 		// Send photo with caption to Telegram
 		console.log('Attempting to send to Telegram chat:', TELEGRAM_CHAT_ID);
 		await bot.sendPhoto(TELEGRAM_CHAT_ID, photoBuffer, {
@@ -114,9 +127,9 @@ ${attendanceTypeText}
 			parse_mode: 'Markdown'
 		});
 
-		// Log successful attendance (optional - you might want to save to database)
+		// Log successful attendance
 		console.log(
-			`Attendance recorded: ${name} - ${studentClass} - ${attendanceType} at ${attendanceTime}`
+			`Attendance recorded and saved: ${name} - ${studentClass} - ${attendanceType} at ${attendanceTime}`
 		);
 
 		return json({

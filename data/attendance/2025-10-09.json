@@ -1,0 +1,26 @@
+{
+  "date": "2025-10-09",
+  "records": [
+    {
+      "id": "abb5600c-21a2-42d8-826f-498b533e4a56",
+      "name": "oleng",
+      "class": "XIF1",
+      "attendanceType": "masuk",
+      "timestamp": "2025-10-09T04:47:02.283Z"
+    },
+    {
+      "id": "70242ef9-ea40-48b2-ba69-8fad38645b07",
+      "name": "oleng",
+      "class": "XIF1",
+      "attendanceType": "masuk",
+      "timestamp": "2025-10-09T04:47:04.825Z"
+    },
+    {
+      "id": "55054e75-4ccf-4f27-a7a9-7c83ebb02d78",
+      "name": "oleng",
+      "class": "XIF1",
+      "attendanceType": "masuk",
+      "timestamp": "2025-10-09T04:47:05.497Z"
+    }
+  ]
+}
