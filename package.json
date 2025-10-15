@@ -48,5 +48,13 @@
 		"exceljs": "^4.4.0",
 		"formidable": "^3.5.4",
 		"node-telegram-bot-api": "^0.66.0"
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "^4.0.0",
+		"lightningcss-linux-x64-gnu": "^1.28.3",
+		"lightningcss-linux-x64-musl": "^1.28.3",
+		"lightningcss-darwin-x64": "^1.28.3",
+		"lightningcss-darwin-arm64": "^1.28.3",
+		"lightningcss-win32-x64-msvc": "^1.28.3"
 	}
 }

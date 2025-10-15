@@ -10,6 +10,11 @@
 	// SMA classes for Adabiah 1 Padang
 	const classes = [
 		"XIF1",
+		"XIF2",
+		"XIF3",
+		"XIF4",
+		"XIF5",
+		"XIF6",
 	];
 
 	const attendanceTypes = [
