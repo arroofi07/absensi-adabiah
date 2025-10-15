@@ -8,7 +8,8 @@
       "Bash(npm run lint)",
       "Bash(npm run format:*)",
       "Bash(curl:*)",
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(git remote remove:*)"
     ],
     "deny": [],
     "ask": []
