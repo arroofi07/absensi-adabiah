@@ -1,51 +1,21 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import TelegramBot from 'node-telegram-bot-api';
 import { env } from '$env/dynamic/private';
-import { saveAttendanceRecord } from '$lib/storage/attendance';
-import { randomUUID } from 'crypto';
 
 // Environment variables for Telegram Bot
 const TELEGRAM_BOT_TOKEN = env.TELEGRAM_BOT_TOKEN || '';
 const TELEGRAM_CHAT_ID = env.TELEGRAM_CHAT_ID || '';
-
-// Initialize Telegram Bot
-let bot: TelegramBot | null = null;
-if (TELEGRAM_BOT_TOKEN) {
-	bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: false });
-}
+// Tidak menggunakan node-telegram-bot-api (serverless friendly): gunakan fetch ke Telegram API
 
 export const POST: RequestHandler = async ({ request }) => {
 	try {
-		// Check if Telegram bot is configured
+		// Check if Telegram is configured
 		if (!TELEGRAM_BOT_TOKEN) {
-			return json(
-				{
-					success: false,
-					error: 'Telegram Bot Token belum dikonfigurasi. Silakan atur TELEGRAM_BOT_TOKEN di file .env'
-				},
-				{ status: 500 }
-			);
+			return json({ success: false, error: 'Telegram Bot Token belum dikonfigurasi.' }, { status: 500 });
 		}
-		
+
 		if (!TELEGRAM_CHAT_ID) {
-			return json(
-				{
-					success: false,
-					error: 'Telegram Chat ID belum dikonfigurasi. Silakan atur TELEGRAM_CHAT_ID di file .env'
-				},
-				{ status: 500 }
-			);
-		}
-		
-		if (!bot) {
-			return json(
-				{
-					success: false,
-					error: 'Telegram Bot gagal diinisialisasi. Periksa konfigurasi bot.'
-				},
-				{ status: 500 }
-			);
+			return json({ success: false, error: 'Telegram Chat ID belum dikonfigurasi.' }, { status: 500 });
 		}
 
 		// Parse the multipart form data
@@ -97,35 +67,32 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		const attendanceTypeText = attendanceType === 'masuk' ? '📍 MASUK' : '🚪 PULANG';
 
-		const message = `
-🏫 **ABSENSI SMA ADABIAH 1 PADANG**
-
-${attendanceTypeText}
-
-👤 **Nama:** ${name}
-🎓 **Kelas:** ${studentClass}
-⏰ **Waktu:** ${attendanceTime}
-
-#Absensi #SMAAdabiah1Padang #${attendanceType.toUpperCase()}
-    `.trim();
-
-		// Save attendance record to JSON file
-		const attendanceRecord = {
-			id: randomUUID(),
-			name,
-			class: studentClass,
-			attendanceType: attendanceType as 'masuk' | 'pulang',
-			timestamp
-		};
-
-		await saveAttendanceRecord(attendanceRecord);
+		// Simpel: tidak menggunakan recap/hashtag, hanya kirim detail absensi
+		const message = `${attendanceTypeText}\n\nNama: ${name}\nKelas: ${studentClass}\nWaktu: ${attendanceTime}`;
 
 		// Send photo with caption to Telegram
 		console.log('Attempting to send to Telegram chat:', TELEGRAM_CHAT_ID);
-		await bot.sendPhoto(TELEGRAM_CHAT_ID, photoBuffer, {
-			caption: message,
-			parse_mode: 'Markdown'
-		});
+		// Send photo with caption to Telegram via direct API call (serverless-safe)
+		console.log('Attempting to send to Telegram chat:', TELEGRAM_CHAT_ID);
+		const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+		const form = new FormData();
+		form.append('chat_id', TELEGRAM_CHAT_ID);
+		form.append('caption', message);
+		form.append('parse_mode', 'Markdown');
+		// append photo as Blob (works in Node 18+/undici environment used by SvelteKit/Vercel)
+		form.append('photo', new Blob([photoBuffer]), 'photo.jpg');
+
+		const resp = await fetch(telegramUrl, { method: 'POST', body: form });
+		let respJson: any;
+		try {
+			respJson = await resp.json();
+		} catch (e) {
+			throw new Error(`Telegram response parse error: ${String(e)}`);
+		}
+		if (!resp.ok || respJson?.ok === false) {
+			const desc = respJson?.description || resp.statusText;
+			throw new Error(`Telegram API error: ${desc}`);
+		}
 
 		// Log successful attendance
 		console.log(

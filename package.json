@@ -43,6 +43,7 @@
 		"vitest-browser-svelte": "^0.1.0"
 	},
 	"dependencies": {
+		"@supabase/supabase-js": "^2.75.1",
 		"date-fns": "^4.1.0",
 		"date-fns-tz": "^3.2.0",
 		"exceljs": "^4.4.0",
