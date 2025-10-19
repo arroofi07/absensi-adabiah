@@ -1,0 +1,19 @@
+{
+  "date": "2025-10-17",
+  "records": [
+    {
+      "id": "1ee2906f-408f-478a-a21a-a11ff34f76f5",
+      "name": "hello worldd",
+      "class": "XIF5",
+      "attendanceType": "masuk",
+      "timestamp": "2025-10-17T03:56:39.751Z"
+    },
+    {
+      "id": "8ed44366-734b-4a38-b59a-c01eefa85e9e",
+      "name": "hello worldd",
+      "class": "XIF5",
+      "attendanceType": "masuk",
+      "timestamp": "2025-10-17T03:56:41.831Z"
+    }
+  ]
+}
